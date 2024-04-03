@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { BsEraserFill, BsFileEarmarkFill, BsPaintBucket } from 'react-icons/bs';
 
 interface WhiteboardProps {
   width: number;
@@ -94,8 +95,8 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ width, height }) => {
         a[0] === b[0] && a[1] === b[1] && a[2] === b[2] && a[3] === b[3];
   
       while (pixelStack.length) {
-        const [x, y] = pixelStack.pop()!; // Destructure from pixelStack.pop()
-        let yPos = y; // Use a mutable variable for iteration
+        const [x, y] = pixelStack.pop()!;
+        let yPos = y; 
   
         while (yPos >= 0 && isSameColor(startColor, imageData.data.slice((yPos * width + x) * 4, (yPos * width + x) * 4 + 4))) {
           yPos--;
@@ -167,7 +168,7 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ width, height }) => {
   };
 
   return (
-    <div>
+    <div className='flex flex-row gap-5'>
       <canvas
         ref={canvasRef}
         width={width}
@@ -176,13 +177,16 @@ const Whiteboard: React.FC<WhiteboardProps> = ({ width, height }) => {
         onMouseMove={draw}
         onMouseUp={endDrawing}
         onMouseOut={endDrawing}
-        style={{ border: '1px solid black' }}
+        className=' bg-white rounded-xl'
       />
-      <input type="range" min="1" max="20" value={penSize} onChange={handlePenSizeChange} />
+      <div className='flex flex-col text-3xl gap-3 items-center justify-center'>
+      <input className="block w-full bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 h-4 rounded-md" type="range" min="1" max="20" value={penSize} onChange={handlePenSizeChange} />
       <input type="color" value={color} onChange={(e) => handleColorChange(e.target.value)} />
-      <button onClick={toggleFill}>{filling ? 'Disable' : 'Enable'} Color Bucket</button>
-      <button onClick={toggleEraser}>{eraser ? 'Disable' : 'Enable'} Eraser</button>
-      <button onClick={clearCanvas}>Clear Canvas</button>
+      <button onClick={toggleFill}><BsPaintBucket /></button>
+      <button onClick={toggleEraser}><BsEraserFill /></button>
+      <button onClick={clearCanvas}><BsFileEarmarkFill /></button>
+      </div>
+     
     </div>
   );
 };
